@@ -1,2 +1,45 @@
-﻿// See https://aka.ms/new-console-template for more information
-Console.WriteLine("Hello, World!");
+﻿using MassTransit;
+using MassTransitPoc.Consumer;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
+using System.Reflection;
+
+public class Program
+{
+
+    public static async Task Main(string[] args)
+    {
+        Console.WriteLine("Consumer started.");
+        await CreateHostBuilder(args).Build().RunAsync();
+    }
+
+    public static IHostBuilder CreateHostBuilder(string[] args) =>
+        Host.CreateDefaultBuilder(args)
+            .ConfigureServices((hostContext, services) =>
+            {
+                services.AddMassTransit(x =>
+                {
+                    x.SetKebabCaseEndpointNameFormatter();
+
+                    // By default, sagas are in-memory, but should be changed to a durable
+                    // saga repository.
+                    x.SetInMemorySagaRepositoryProvider();
+
+                    var entryAssembly = Assembly.GetEntryAssembly();
+
+                    x.AddConsumers(entryAssembly);
+                    x.AddSagaStateMachines(entryAssembly);
+                    x.AddSagas(entryAssembly);
+                    x.AddActivities(entryAssembly);
+
+                    x.AddBus(context => Bus.Factory.CreateUsingRabbitMq(cfg =>
+                    {
+                        cfg.Host("rabbitmq://local-rabbitmq");
+
+                        cfg.ConfigureEndpoints(context);
+                    }));
+                });
+
+                services.AddHostedService<Worker>();
+            });
+}

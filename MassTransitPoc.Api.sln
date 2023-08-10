@@ -3,13 +3,13 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.6.33829.357
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MassTransitPoc.Api", "MassTransitPoc.Api\MassTransitPoc.Api.csproj", "{5A81E242-7D23-49C4-9231-2031523A7629}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MassTransitPoc.Contracts", "MassTransitPoc.Contracts\MassTransitPoc.Contracts.csproj", "{309CBA46-77B5-4952-81F0-0025F5709DAC}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MassTransitPoc.Contracts", "MassTransitPoc.Contracts\MassTransitPoc.Contracts.csproj", "{309CBA46-77B5-4952-81F0-0025F5709DAC}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MassTransitPoc.Consumer", "MassTransitPoc.Consumer\MassTransitPoc.Consumer.csproj", "{1FBCFA8C-16E1-4807-A283-38680E952C0E}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MassTransitPoc.Consumer", "MassTransitPoc.Consumer\MassTransitPoc.Consumer.csproj", "{1FBCFA8C-16E1-4807-A283-38680E952C0E}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MassTransitPoc.Api", "MassTransitPoc.Api\MassTransitPoc.Api.csproj", "{E508D9CD-AE6E-4D5F-9534-843826A0E070}"
 EndProject
-Project("{E53339B2-1760-4266-BCC7-CA923CBCF16C}") = "docker-compose", "docker-compose.dcproj", "{059BDE0E-C16C-4F25-9B0F-6BD226314336}"
+Project("{E53339B2-1760-4266-BCC7-CA923CBCF16C}") = "docker-compose", "docker-compose.dcproj", "{BA5DB101-BA84-48D0-B7B3-E7465B980D4F}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -17,10 +17,6 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{5A81E242-7D23-49C4-9231-2031523A7629}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{5A81E242-7D23-49C4-9231-2031523A7629}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{5A81E242-7D23-49C4-9231-2031523A7629}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{5A81E242-7D23-49C4-9231-2031523A7629}.Release|Any CPU.Build.0 = Release|Any CPU
 		{309CBA46-77B5-4952-81F0-0025F5709DAC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{309CBA46-77B5-4952-81F0-0025F5709DAC}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{309CBA46-77B5-4952-81F0-0025F5709DAC}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -29,10 +25,14 @@ Global
 		{1FBCFA8C-16E1-4807-A283-38680E952C0E}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{1FBCFA8C-16E1-4807-A283-38680E952C0E}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{1FBCFA8C-16E1-4807-A283-38680E952C0E}.Release|Any CPU.Build.0 = Release|Any CPU
-		{059BDE0E-C16C-4F25-9B0F-6BD226314336}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{059BDE0E-C16C-4F25-9B0F-6BD226314336}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{059BDE0E-C16C-4F25-9B0F-6BD226314336}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{059BDE0E-C16C-4F25-9B0F-6BD226314336}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E508D9CD-AE6E-4D5F-9534-843826A0E070}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E508D9CD-AE6E-4D5F-9534-843826A0E070}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E508D9CD-AE6E-4D5F-9534-843826A0E070}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E508D9CD-AE6E-4D5F-9534-843826A0E070}.Release|Any CPU.Build.0 = Release|Any CPU
+		{BA5DB101-BA84-48D0-B7B3-E7465B980D4F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BA5DB101-BA84-48D0-B7B3-E7465B980D4F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BA5DB101-BA84-48D0-B7B3-E7465B980D4F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BA5DB101-BA84-48D0-B7B3-E7465B980D4F}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -3,7 +3,7 @@
   <PropertyGroup Label="Globals">
     <ProjectVersion>2.1</ProjectVersion>
     <DockerTargetOS>Linux</DockerTargetOS>
-    <ProjectGuid>059bde0e-c16c-4f25-9b0f-6bd226314336</ProjectGuid>
+    <ProjectGuid>ba5db101-ba84-48d0-b7b3-e7465b980d4f</ProjectGuid>
     <DockerLaunchAction>LaunchBrowser</DockerLaunchAction>
     <DockerServiceUrl>{Scheme}://localhost:{ServicePort}/swagger</DockerServiceUrl>
     <DockerServiceName>masstransitpoc.api</DockerServiceName>
