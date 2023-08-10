@@ -1,7 +1,9 @@
 ﻿using MassTransit;
 using MassTransitPoc.Consumer;
+using MassTransitPoc.Contracts.Entities;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.Logging;
 using System.Reflection;
 
 public class Program
@@ -17,6 +19,13 @@ public class Program
         Host.CreateDefaultBuilder(args)
             .ConfigureServices((hostContext, services) =>
             {
+                services.AddScoped(provider =>
+                {
+                    var filePath = Path.Combine("/app/shared-data", "products.json");
+                    var logger = provider.GetRequiredService<ILogger<ProductService>>();
+                    return new ProductService(filePath, logger);
+                });
+
                 services.AddMassTransit(x =>
                 {
                     x.SetKebabCaseEndpointNameFormatter();
@@ -28,9 +37,6 @@ public class Program
                     var entryAssembly = Assembly.GetEntryAssembly();
 
                     x.AddConsumers(entryAssembly);
-                    x.AddSagaStateMachines(entryAssembly);
-                    x.AddSagas(entryAssembly);
-                    x.AddActivities(entryAssembly);
 
                     x.AddBus(context => Bus.Factory.CreateUsingRabbitMq(cfg =>
                     {

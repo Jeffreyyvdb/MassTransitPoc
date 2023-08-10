@@ -1,18 +1,6 @@
 version: '3.4'
 name: masstransitpoc-compose
 services:
-  masstransitpoc.api:
-    image: ${DOCKER_REGISTRY-}masstransitpocapi
-    build:
-      context: .
-      dockerfile: MassTransitPoc.Api/Dockerfile
-  
-  masstransitpoc.consumer:
-    image: ${DOCKER_REGISTRY-}masstransitpocconsumer
-    build:
-      context: .
-      dockerfile: MassTransitPoc.Consumer/Dockerfile
-
   masstransitpoc.rabbitmq:
     image: ${DOCKER_REGISTRY-}masstransit/rabbitmq
     container_name: rabbitmq
@@ -20,5 +8,25 @@ services:
     ports:
       - 5672:5672
       - 15672:15672
+
+  masstransitpoc.consumer:
+    image: ${DOCKER_REGISTRY-}masstransitpocconsumer
+    build:
+      context: .
+      dockerfile: MassTransitPoc.Consumer/Dockerfile
+    volumes:
+      - shared-data:/app/shared-data
+
+  masstransitpoc.api:
+    image: ${DOCKER_REGISTRY-}masstransitpocapi
+    build:
+      context: .
+      dockerfile: MassTransitPoc.Api/Dockerfile
+    volumes:
+      - shared-data:/app/shared-data
+
+volumes:
+  shared-data:
+
 
     

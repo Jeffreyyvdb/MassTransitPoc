@@ -5,21 +5,25 @@ using Microsoft.Extensions.Logging;
 
 namespace MassTransitPoc.Consumer.Consumers;
 
-internal class ProductDeletedConsumer : IConsumer<ProductDeleted>
+public class ProductDeletedConsumer : IConsumer<ProductDeleted>
 {
     private readonly ILogger<ProductDeletedConsumer> _logger;
+    private readonly ProductService _productService;
 
-    public ProductDeletedConsumer(ILogger<ProductDeletedConsumer> logger)
+    public ProductDeletedConsumer(ILogger<ProductDeletedConsumer> logger, ProductService productService)
     {
         _logger = logger;
+        _productService = productService;
     }
 
-    public Task Consume(ConsumeContext<ProductDeleted> context)
+    public async Task Consume(ConsumeContext<ProductDeleted> context)
     {
         Guid guid = context.Message.Guid;
 
-        Product.Products.RemoveAll(p => p.Guid == guid);
+        var products = await _productService.LoadProductsAsync();
+        products.RemoveAll(p => p.Guid == guid);
+        await _productService.SaveProductsAsync(products);
+
         _logger.LogInformation("Product with Guid: {Guid} deleted.", guid);
-        return Task.CompletedTask;
     }
 }

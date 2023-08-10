@@ -1,9 +1,18 @@
 using MassTransit;
+using MassTransitPoc.Contracts.Entities;
 using System.Reflection;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
+builder.Services.AddScoped<ProductService>(provider =>
+{
+    var filePath = Path.Combine("/app/shared-data", "products.json");
+    var logger = provider.GetRequiredService<ILogger<ProductService>>();
+    return new ProductService(filePath, logger);
+});
+
+
 builder.Services.AddMassTransit(x =>
 {
     x.SetKebabCaseEndpointNameFormatter();
@@ -11,13 +20,6 @@ builder.Services.AddMassTransit(x =>
     // By default, sagas are in-memory, but should be changed to a durable
     // saga repository.
     x.SetInMemorySagaRepositoryProvider();
-
-    var entryAssembly = Assembly.GetEntryAssembly();
-
-    x.AddConsumers(entryAssembly);
-    x.AddSagaStateMachines(entryAssembly);
-    x.AddSagas(entryAssembly);
-    x.AddActivities(entryAssembly);
 
     x.AddBus(context => Bus.Factory.CreateUsingRabbitMq(cfg =>
     {

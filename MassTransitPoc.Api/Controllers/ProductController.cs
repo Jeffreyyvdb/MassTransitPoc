@@ -13,19 +13,23 @@ public class ProductController : ControllerBase
 
     private readonly ILogger<ProductController> _logger;
     private readonly IBus _bus;
+    private readonly ProductService _productService;
 
-    public ProductController(ILogger<ProductController> logger, IBus bus)
+    public ProductController(ILogger<ProductController> logger, IBus bus, ProductService productService)
     {
         _logger = logger;
         _bus = bus;
+        _productService = productService;
     }
 
     [HttpGet(Name = "GetProducts")]
-    public IActionResult Get()
+    public async Task<IActionResult> Get()
     {
-        _logger.LogInformation("Products requested, returned {Count} products.", Product.Products.Count);
+        var products = await _productService.LoadProductsAsync();
 
-        return Ok(Product.Products);
+        _logger.LogInformation("Products requested, returned {Count} products.", products.Count);
+
+        return Ok(products);
     }
 
     [HttpPost(Name = "AddProduct")]
@@ -37,9 +41,11 @@ public class ProductController : ControllerBase
     }
 
     [HttpPatch(Name = "UpdateProduct")]
-    public IActionResult Update(Guid guid, string newName)
+    public async Task<IActionResult> Update(Guid guid, string newName)
     {
-        Product? product = Product.Products.Find(p => p.Guid == guid);
+        var products = await _productService.LoadProductsAsync();
+
+        Product? product = products.Find(p => p.Guid == guid);
 
         if(product is null)
         {
@@ -48,23 +54,27 @@ public class ProductController : ControllerBase
         }
 
         _logger.LogInformation("Publishing ProductUpdated event");
-        _bus.Publish(new ProductUpdated { Guid = guid, NewName = newName });
+
+        await _bus.Publish(new ProductUpdated { Guid = guid, NewName = newName });
         return Ok();
     }
 
     [HttpDelete(Name = "DeleteProduct")]
-    public IActionResult Delete(Guid guid)
+    public async Task<IActionResult> Delete(Guid guid)
     {
-        Product? product = Product.Products.Find(p => p.Guid == guid);
-        if(product is null)
+        var products = await _productService.LoadProductsAsync();
+
+        Product? product = products.Find(p => p.Guid == guid);
+
+        if (product is null)
         {
             _logger.LogWarning("Product with Guid: {Guid} not found.", guid);
             return NotFound(guid);
         }
 
         _logger.LogInformation("Publishing ProductDeleted event");
-        _bus.Publish(new ProductDeleted { Guid = guid });
+        await _bus.Publish(new ProductDeleted { Guid = guid });
 
-        return Ok(Product.Products);
+        return Ok();
     }
 }
