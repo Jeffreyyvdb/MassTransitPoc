@@ -1,0 +1,15 @@
+version: '3.4'
+
+services:
+  masstransitpoc.api:
+    image: ${DOCKER_REGISTRY-}masstransitpocapi
+    build:
+      context: .
+      dockerfile: MassTransitPoc.Api/Dockerfile
+
+  masstransitpoc.consumer:
+    image: ${DOCKER_REGISTRY-}masstransitpocconsumer
+    build:
+      context: .
+      dockerfile: MassTransitPoc.Consumer/Dockerfile
+
