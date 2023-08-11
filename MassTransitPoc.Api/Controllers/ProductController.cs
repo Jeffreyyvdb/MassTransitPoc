@@ -1,4 +1,5 @@
 ﻿using MassTransit;
+using MassTransitPoc.Api.RequestDtos;
 using MassTransitPoc.Contracts;
 using MassTransitPoc.Contracts.Entities;
 using Microsoft.AspNetCore.Http;
@@ -13,12 +14,14 @@ public class ProductController : ControllerBase
 
     private readonly ILogger<ProductController> _logger;
     private readonly IBus _bus;
+    private readonly IMessageScheduler _messageScheduler;
     private readonly ProductService _productService;
 
-    public ProductController(ILogger<ProductController> logger, IBus bus, ProductService productService)
+    public ProductController(ILogger<ProductController> logger, IBus bus, IMessageScheduler messageScheduler, ProductService productService)
     {
         _logger = logger;
         _bus = bus;
+        _messageScheduler = messageScheduler;
         _productService = productService;
     }
 
@@ -33,15 +36,24 @@ public class ProductController : ControllerBase
     }
 
     [HttpPost("add",Name = "AddProduct")]
-    public IActionResult Add(string name)
+    public IActionResult Add(CreateProductRequest request, CancellationToken cancellationToken)
     {
         _logger.LogInformation("Publishing ProductCreated event");
-        _bus.Publish(new ProductCreated { Name = name });
+        
+        var message = new ProductCreated
+        {
+            Name = request.Name,
+            ShouldThrowException = request.ShouldThrowException,
+            DelayInMilliseconds = request.DelayInMilliseconds
+        };
+
+        //_messageScheduler.SchedulePublish(DateTime.Now.AddMinutes(5), message, cancellationToken);
+        _bus.Publish(message, cancellationToken);
         return Ok();
     }
 
     [HttpPatch("update/{guid}", Name = "UpdateProduct")]
-    public async Task<IActionResult> Update(Guid guid, string newName)
+    public async Task<IActionResult> Update(Guid guid, UpdateProductRequest request)
     {
         var products = await _productService.LoadProductsAsync();
 
@@ -55,7 +67,13 @@ public class ProductController : ControllerBase
 
         _logger.LogInformation("Publishing ProductUpdated event");
 
-        await _bus.Publish(new ProductUpdated { Guid = guid, NewName = newName });
+        await _bus.Publish(new ProductUpdated
+        {
+            Guid = guid,
+            NewName = request.NewName,
+            ShouldThrowException = request.ShouldThrowException,
+            DelayInMilliseconds = request.DelayInMilliseconds
+        });
         return Ok();
     }
 

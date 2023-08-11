@@ -1,4 +1,5 @@
 using MassTransit;
+using MassTransitPoc.Contracts;
 using MassTransitPoc.Contracts.Entities;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -20,7 +21,12 @@ builder.Services.AddMassTransit(x =>
     // saga repository.
     x.SetInMemorySagaRepositoryProvider();
 
-    x.AddBus(context => Bus.Factory.CreateUsingRabbitMq(cfg =>
+
+    Uri schedulerEndpoint = new Uri("queue:product-scheduled");
+
+    x.AddMessageScheduler(schedulerEndpoint);
+
+    x.UsingRabbitMq((context, cfg) =>
     {
         cfg.Host("rabbitmq://local-rabbitmq", h =>
         {
@@ -28,8 +34,11 @@ builder.Services.AddMassTransit(x =>
             h.Password("publisher");
         });
 
+        cfg.UseMessageScheduler(schedulerEndpoint);
+        cfg.UseMessageRetry(r => r.Immediate(5));
         cfg.ConfigureEndpoints(context);
-    }));
+    });
+
 });
 
 builder.Services.AddControllers();

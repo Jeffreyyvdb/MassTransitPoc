@@ -2,7 +2,6 @@
 using MassTransitPoc.Contracts;
 using MassTransitPoc.Contracts.Entities;
 using Microsoft.Extensions.Logging;
-using System.Reflection.Metadata.Ecma335;
 
 namespace MassTransitPoc.Consumer.Consumers;
 
@@ -23,12 +22,12 @@ public class ProductCreatedConsumer : IConsumer<ProductCreated>
         _logger.LogInformation("Started creating product with name : {Name}", name);
         Product product = new(name);
 
-        await Task.Delay(5000);
-
-        if(new Random().Next(1, 5) == 3)
+        if (context.Message.ShouldThrowException)
         {
             throw new Exception("Random exception");
         }
+
+        await Task.Delay(context.Message.DelayInMilliseconds);
 
         var products = await _productService.LoadProductsAsync();
         products.Add(product);

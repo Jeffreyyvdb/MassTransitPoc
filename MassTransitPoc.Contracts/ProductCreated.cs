@@ -1,5 +1,5 @@
 ﻿namespace MassTransitPoc.Contracts;
-public record ProductCreated
+public record ProductCreated : BaseContract
 {
     public string Name { get;init;} = string.Empty;
 }

@@ -1,5 +1,7 @@
 ﻿using MassTransit;
 using MassTransitPoc.Consumer;
+using MassTransitPoc.Consumer.Consumers;
+using MassTransitPoc.Contracts;
 using MassTransitPoc.Contracts.Entities;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -38,7 +40,7 @@ public class Program
 
                     x.AddConsumers(entryAssembly);
 
-                    x.AddBus(context => Bus.Factory.CreateUsingRabbitMq(cfg =>
+                    x.UsingRabbitMq((context, cfg) =>
                     {
                         cfg.Host("rabbitmq://local-rabbitmq", h =>
                         {
@@ -46,8 +48,15 @@ public class Program
                             h.Password("product-consumer");
                         });
 
+                        cfg.ReceiveEndpoint("product-scheduled", e =>
+                        {
+                            e.Consumer<ProductCreatedConsumer>(context);
+                        });
+
+                        cfg.UseMessageRetry(r => r.Immediate(5));
                         cfg.ConfigureEndpoints(context);
-                    }));
+                    });
+
                 });
 
                 services.AddHostedService<Worker>();
