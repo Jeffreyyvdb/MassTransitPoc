@@ -40,7 +40,11 @@ public class Program
 
                     x.AddBus(context => Bus.Factory.CreateUsingRabbitMq(cfg =>
                     {
-                        cfg.Host("rabbitmq://local-rabbitmq");
+                        cfg.Host("rabbitmq://local-rabbitmq", h =>
+                        {
+                            h.Username("product-consumer");
+                            h.Password("product-consumer");
+                        });
 
                         cfg.ConfigureEndpoints(context);
                     }));

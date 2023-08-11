@@ -32,7 +32,7 @@ public class ProductController : ControllerBase
         return Ok(products);
     }
 
-    [HttpPost(Name = "AddProduct")]
+    [HttpPost("add",Name = "AddProduct")]
     public IActionResult Add(string name)
     {
         _logger.LogInformation("Publishing ProductCreated event");
@@ -40,7 +40,7 @@ public class ProductController : ControllerBase
         return Ok();
     }
 
-    [HttpPatch(Name = "UpdateProduct")]
+    [HttpPatch("update/{guid}", Name = "UpdateProduct")]
     public async Task<IActionResult> Update(Guid guid, string newName)
     {
         var products = await _productService.LoadProductsAsync();
@@ -59,7 +59,8 @@ public class ProductController : ControllerBase
         return Ok();
     }
 
-    [HttpDelete(Name = "DeleteProduct")]
+
+    [HttpDelete("Delete/{guid}", Name = "DeleteProduct")]
     public async Task<IActionResult> Delete(Guid guid)
     {
         var products = await _productService.LoadProductsAsync();
@@ -74,6 +75,16 @@ public class ProductController : ControllerBase
 
         _logger.LogInformation("Publishing ProductDeleted event");
         await _bus.Publish(new ProductDeleted { Guid = guid });
+
+        return Ok();
+    }
+
+    [HttpDelete("DeleteAll", Name = "DeleteAllProducts")]
+    public async Task<IActionResult> DeleteAll()
+    {
+
+        _logger.LogInformation("Publishing delete all.");
+        await _bus.Publish(new ProductAllDeleted());
 
         return Ok();
     }

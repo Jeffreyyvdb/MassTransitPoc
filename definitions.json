@@ -1,0 +1,60 @@
+{
+    "users": [
+      {
+        "name": "guest",
+        "password": "guest",
+        "tags": ["administrator"]
+      },
+      {
+        "name": "admin",
+        "password": "admin",
+        "tags": ["administrator"]
+      },
+      {
+        "name": "product-consumer",
+        "password": "product-consumer",
+        "tags": [ "product-consumer", "administrator" ]
+      },
+      {
+        "name": "publisher",
+        "password": "publisher",
+        "tags": [ "publisher", "administrator" ]
+      }
+    ],
+    "vhosts": [
+        {
+          "name": "/"
+        }
+      ],
+  "permissions": [
+    {
+      "user": "guest",
+      "vhost": "/",
+      "configure": ".*",
+      "write": ".*",
+      "read": ".*"
+    },
+    {
+      "user": "admin",
+      "vhost": "/",
+      "configure": ".*",
+      "write": ".*",
+      "read": ".*"
+    },
+    {
+      "user": "product-consumer",
+      "vhost": "/",
+      "configure": ".*",
+      "write": ".*",
+      "read": ".*"
+    },
+   
+    {
+      "user": "publisher",
+      "vhost": "/",
+      "configure": ".*",
+      "write": ".*",
+      "read": ".*"
+    }
+  ]
+  }

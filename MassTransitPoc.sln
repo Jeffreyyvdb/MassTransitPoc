@@ -7,9 +7,14 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MassTransitPoc.Contracts", 
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MassTransitPoc.Consumer", "MassTransitPoc.Consumer\MassTransitPoc.Consumer.csproj", "{1FBCFA8C-16E1-4807-A283-38680E952C0E}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MassTransitPoc.Api", "MassTransitPoc.Api\MassTransitPoc.Api.csproj", "{E508D9CD-AE6E-4D5F-9534-843826A0E070}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MassTransitPoc.Api", "MassTransitPoc.Api\MassTransitPoc.Api.csproj", "{E508D9CD-AE6E-4D5F-9534-843826A0E070}"
 EndProject
 Project("{E53339B2-1760-4266-BCC7-CA923CBCF16C}") = "docker-compose", "docker-compose.dcproj", "{BA5DB101-BA84-48D0-B7B3-E7465B980D4F}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{778753B3-C206-4436-BC6E-0218623B1E05}"
+	ProjectSection(SolutionItems) = preProject
+		rabbitmq.conf = rabbitmq.conf
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

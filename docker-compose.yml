@@ -9,8 +9,22 @@ services:
     ports:
       - 5672:5672
       - 15672:15672
+    volumes:
+      - ./rabbitmq.conf:/etc/rabbitmq/rabbitmq.conf
+      - ./definitions.json:/etc/rabbitmq/definitions.json
+      - rabbitmq-data:/var/lib/rabbitmq
 
   masstransitpoc.consumer:
+    image: ${DOCKER_REGISTRY-}masstransitpocconsumer
+    build:
+      context: .
+      dockerfile: MassTransitPoc.Consumer/Dockerfile
+    volumes:
+      - shared-data:/app/shared-data
+    depends_on:
+      - masstransitpoc.rabbitmq
+ 
+  masstransitpoc.consumer2:
     image: ${DOCKER_REGISTRY-}masstransitpocconsumer
     build:
       context: .
@@ -32,3 +46,4 @@ services:
 
 volumes:
   shared-data:
+  rabbitmq-data:

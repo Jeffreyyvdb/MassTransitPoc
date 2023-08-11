@@ -22,7 +22,11 @@ builder.Services.AddMassTransit(x =>
 
     x.AddBus(context => Bus.Factory.CreateUsingRabbitMq(cfg =>
     {
-        cfg.Host("rabbitmq://local-rabbitmq");
+        cfg.Host("rabbitmq://local-rabbitmq", h =>
+        {
+            h.Username("publisher");
+            h.Password("publisher");
+        });
 
         cfg.ConfigureEndpoints(context);
     }));
