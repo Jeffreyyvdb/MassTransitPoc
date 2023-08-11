@@ -1,6 +1,6 @@
 {
   "profiles": {
-    "MassTransitPoc.Consumer": {
+    "MassTransitPoc.Consumer-1": {
       "commandName": "Project"
     },
     "Docker": {

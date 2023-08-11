@@ -1,6 +1,5 @@
 using MassTransit;
 using MassTransitPoc.Contracts.Entities;
-using System.Reflection;
 
 var builder = WebApplication.CreateBuilder(args);
 

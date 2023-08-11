@@ -19,13 +19,15 @@ public class ProductCreatedConsumer : IConsumer<ProductCreated>
     public async Task Consume(ConsumeContext<ProductCreated> context)
     {
         string name = context.Message.Name;
+        _logger.LogInformation("Started creating product with name : {Name}", name);
         Product product = new(name);
+
+        await Task.Delay(5000);
 
         var products = await _productService.LoadProductsAsync();
         products.Add(product);
         await _productService.SaveProductsAsync(products);
 
         _logger.LogInformation("Product: {Name} added with Guid: {Guid}.", product.Name, product.Guid);
-        _logger.LogInformation("ProductCreated Consumed");
     }
 }

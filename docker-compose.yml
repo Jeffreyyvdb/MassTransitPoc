@@ -1,6 +1,7 @@
 version: '3.4'
 name: masstransitpoc-compose
 services:
+
   masstransitpoc.rabbitmq:
     image: ${DOCKER_REGISTRY-}masstransit/rabbitmq
     container_name: rabbitmq
@@ -16,6 +17,8 @@ services:
       dockerfile: MassTransitPoc.Consumer/Dockerfile
     volumes:
       - shared-data:/app/shared-data
+    depends_on:
+      - masstransitpoc.rabbitmq
 
   masstransitpoc.api:
     image: ${DOCKER_REGISTRY-}masstransitpocapi
@@ -24,9 +27,8 @@ services:
       dockerfile: MassTransitPoc.Api/Dockerfile
     volumes:
       - shared-data:/app/shared-data
+    depends_on:
+      - masstransitpoc.rabbitmq
 
 volumes:
   shared-data:
-
-
-    
